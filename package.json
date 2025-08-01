@@ -1,0 +1,33 @@
+{
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "vite preview",
+		"openapi-ts": "openapi-ts",
+		"fmt": "bun run biome format --write",
+		"biome": "[ -n \"$IN_NIX_SHELL\" ] && b=$(which -a biome | grep -v node_modules | head -n 1) || b=biome; $b",
+		"date": "bun run data:download && bun run data:upload",
+		"data:download": "cd data && s5cmd --no-sign-request --endpoint-url https://storage.googleapis.com run manifest_gcs.s5cmd",
+		"data:upload": "bun run ./uploadData.ts"
+	},
+	"dependencies": {
+		"@patternfly/react-core": "^6.3.0",
+		"@patternfly/react-table": "^6.3.0",
+		"@tanstack/react-query": "^5.84.1",
+		"preact": "^10.13.1"
+	},
+	"devDependencies": {
+		"@hey-api/openapi-ts": "^0.80.1",
+		"@preact/preset-vite": "^2.5.0",
+		"@types/bun": "^1.2.19",
+		"cli-progress": "^3.12.0",
+		"concurrently": "^9.2.0",
+		"typescript": "^5.9.2",
+		"vite": "^4.3.2"
+	},
+	"optionalDependencies": {
+		"@biomejs/biome": "^2.1.3"
+	}
+}

@@ -1,0 +1,28 @@
+# To obtain these images, install s5cmd (https://github.com/peak/s5cmd),
+# then run the following command:
+# s5cmd --no-sign-request --endpoint-url https://s3.amazonaws.com run <manifest file name>
+cp s3://idc-open-data/9de7bda7-8b57-408b-85b9-e72f2eb6c9ea/* .
+cp s3://idc-open-data/ae792c3f-cdd4-409d-9d59-2d70f19a5ef9/* .
+cp s3://idc-open-data/d478b0bd-1f80-4734-8d81-47f20c36d0ab/* .
+cp s3://idc-open-data/2ed24cee-1313-486e-856c-937eea5883a5/* .
+cp s3://idc-open-data/ab966524-b076-457e-bfb2-35d655d25752/* .
+cp s3://idc-open-data/7e650ffe-a896-4172-a533-1058cb4550a7/* .
+cp s3://idc-open-data/0262c009-b1ff-4032-a69d-68b5fef608c3/* .
+cp s3://idc-open-data/71e60afd-fd18-4466-b2eb-d30aec1b3b74/* .
+cp s3://idc-open-data/7ad1c510-4054-4021-9ea2-fa60eb4b679b/* .
+cp s3://idc-open-data/0c0365f6-d63a-4ddc-a7a9-adde5d3624cc/* .
+cp s3://idc-open-data/bf5c1fd9-5a94-4ddb-b9b6-c0dad95a804c/* .
+cp s3://idc-open-data/64a54544-0d1e-4d93-8130-0dde9e7d5548/* .
+cp s3://idc-open-data/7371d787-fa2c-4bc3-ab91-9d5dfbbe1940/* .
+cp s3://idc-open-data/5602fd0a-f0c4-41d2-b992-3f494e9c50d1/* .
+cp s3://idc-open-data/cb555121-aed1-4a14-8767-afefc2b370a3/* .
+cp s3://idc-open-data/2e1f7cf1-fcdf-415f-ba4e-3091e2797c1a/* .
+cp s3://idc-open-data/bd8df7da-2a5f-4a54-9c09-88dcd4ab3dce/* .
+cp s3://idc-open-data/3506bc05-745f-4635-8f47-647b4dca8bbf/* .
+cp s3://idc-open-data/d58c4da7-de5f-4201-aa52-079f51e17e8a/* .
+cp s3://idc-open-data/8b13e9eb-a3d0-41d5-a4bc-1bd2280dc300/* .
+cp s3://idc-open-data/502b3444-5b21-4d2e-b6eb-5e8fba4764b2/* .
+cp s3://idc-open-data/4b81bbbe-bd03-4c2e-99a5-59f8b70634c7/* .
+cp s3://idc-open-data/694ab8d9-4f48-4138-9207-831833fc7082/* .
+cp s3://idc-open-data/0329c630-12e8-4293-912a-99d3b3189cff/* .
+cp s3://idc-open-data/925c492f-139d-4fcc-9357-6a0cd4c9b6db/* .

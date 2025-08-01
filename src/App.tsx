@@ -6,10 +6,8 @@ import { useMemo } from "preact/hooks";
 export function App() {
 	const queryClient = useMemo(() => new QueryClient(), []);
 	return (
-		<>
-			<QueryClientProvider client={queryClient}>
-				<PatientsTable />
-			</QueryClientProvider>
-		</>
+		<QueryClientProvider client={queryClient}>
+			<PatientsTable />
+		</QueryClientProvider>
 	);
 }

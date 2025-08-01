@@ -1,5 +1,5 @@
-import { defineConfig } from "vite";
 import preact from "@preact/preset-vite";
+import { defineConfig } from "vite";
 
 const ORTHANC_URL = "http://localhost:8042";
 const ORTHANC_APIS = [
@@ -8,6 +8,7 @@ const ORTHANC_APIS = [
 	"/series",
 	"/instances",
 	"/tools",
+	"/system",
 ];
 
 // https://vitejs.dev/config/

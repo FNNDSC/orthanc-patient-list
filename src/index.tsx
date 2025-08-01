@@ -1,4 +1,4 @@
-import { App } from "./App";
 import { render } from "preact";
+import { App } from "./App";
 
 render(<App />, document.getElementById("app"));

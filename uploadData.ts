@@ -1,9 +1,10 @@
 /**
  * Upload directory of DICOM files to Orthanc (and show a progress bar).
  */
-import * as path from "node:path";
+
 import { readdir } from "node:fs/promises";
-import { SingleBar, Presets } from "cli-progress";
+import * as path from "node:path";
+import { Presets, SingleBar } from "cli-progress";
 
 const DATA_DIR = "data";
 
@@ -15,7 +16,7 @@ const bar = new SingleBar({}, Presets.shades_classic);
 bar.start(files.length, 0);
 
 for (const file of files) {
-	let res = await fetch("http://localhost:8042/instances", {
+	const res = await fetch("http://localhost:8042/instances", {
 		method: "POST",
 		headers: {
 			Expect: "",

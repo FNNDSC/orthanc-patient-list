@@ -22,6 +22,7 @@ import { ExclamationCircleIcon, InfoCircleIcon } from "@patternfly/react-icons";
 import { computed, effect, signal, useSignal } from "@preact/signals";
 import { Show } from "@preact/signals/utils";
 import { useCallback, useEffect, useMemo } from "preact/hooks";
+import { MrnSearchInput } from "../Search";
 import { useClient, useSystem } from "../useOrthanc";
 import ChrisLogo from "./ChRISlogo-color.svg";
 import ChrisNodesBackground from "./chris_nodes_gradient.svg";
@@ -183,6 +184,9 @@ function Masthead() {
 				<Toolbar>
 					<ToolbarContent>
 						<ToolbarItem align={{ default: "alignEnd" }}>
+							<MrnSearchInput />
+						</ToolbarItem>
+						<ToolbarItem>
 							<ThemeSelect />
 						</ToolbarItem>
 						<ToolbarItem>

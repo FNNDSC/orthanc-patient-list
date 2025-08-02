@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { PatientsTable } from "./table";
+import { PatientsTable } from "./Table";
 import "@patternfly/react-core/dist/styles/base.css";
 import { Page, PageSection } from "@patternfly/react-core";
 import { useMemo } from "preact/hooks";

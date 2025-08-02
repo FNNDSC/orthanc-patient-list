@@ -14,7 +14,7 @@ const ORTHANC_APIS = [
 	"/system",
 	"/ui",
 	"/ohif",
-	"/dicom-web"
+	"/dicom-web",
 ];
 
 const execOptions = { stdio: "pipe", encoding: "utf-8" } as const;

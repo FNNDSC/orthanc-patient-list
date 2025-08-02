@@ -8,7 +8,7 @@
 		"openapi-ts": "openapi-ts",
 		"fmt": "bun run biome format --write",
 		"biome": "[ -n \"$IN_NIX_SHELL\" ] && b=$(which -a biome | grep -v node_modules | head -n 1) || b=biome; $b",
-		"date": "bun run data:download && bun run data:upload",
+		"data": "bun run data:download && bun run data:upload",
 		"data:download": "cd data && s5cmd --no-sign-request --endpoint-url https://storage.googleapis.com run manifest_gcs.s5cmd",
 		"data:upload": "bun run ./uploadData.ts"
 	},

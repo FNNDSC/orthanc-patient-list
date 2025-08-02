@@ -1,27 +1,19 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { PatientsTable } from "./table";
 import "@patternfly/react-core/dist/styles/base.css";
+import { Page, PageSection } from "@patternfly/react-core";
 import { useMemo } from "preact/hooks";
-import { StatusBar } from "./StatusBar";
-import { Flex, FlexItem, Page, PageSection } from "@patternfly/react-core";
-import styles from "./styles.module.css";
+import { Masthead } from "./Masthead";
 
 export function App() {
 	const queryClient = useMemo(() => new QueryClient(), []);
 	return (
 		<QueryClientProvider client={queryClient}>
-			<Flex
-				direction={{ default: "column" }}
-				justifyContent={{ default: "justifyContentSpaceBetween" }}
-				className={styles.page}
-			>
-				<FlexItem style={{ minHeight: "100%", backgroundColor: "green" }}>
+			<Page isContentFilled masthead={<Masthead />}>
+				<PageSection isFilled>
 					<PatientsTable />
-				</FlexItem>
-				<FlexItem className={styles.statusBar}>
-					<StatusBar />
-				</FlexItem>
-			</Flex>
+				</PageSection>
+			</Page>
 		</QueryClientProvider>
 	);
 }

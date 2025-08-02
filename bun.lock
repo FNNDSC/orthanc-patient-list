@@ -6,7 +6,9 @@
         "@patternfly/react-component-groups": "^6.3.0",
         "@patternfly/react-core": "^6.3.0",
         "@patternfly/react-icons": "^6.3.0",
+        "@patternfly/react-styles": "^6.3.0",
         "@patternfly/react-table": "^6.3.0",
+        "@preact/signals": "^2.2.1",
         "@tanstack/react-query": "^5.84.1",
         "preact": "^10.13.1",
       },
@@ -164,6 +166,10 @@
     "@patternfly/react-tokens": ["@patternfly/react-tokens@6.3.0", "", {}, "sha512-yWStfkbxg4RWAExFKS/JRGScyadOy35yr4DFispNeHrkZWMp4pwKf0VdwlQZ7+ZtSgEWtzzy1KFxMLmWh3mEqA=="],
 
     "@preact/preset-vite": ["@preact/preset-vite@2.10.2", "", { "dependencies": { "@babel/plugin-transform-react-jsx": "^7.22.15", "@babel/plugin-transform-react-jsx-development": "^7.22.5", "@prefresh/vite": "^2.4.1", "@rollup/pluginutils": "^4.1.1", "babel-plugin-transform-hook-names": "^1.0.2", "debug": "^4.3.4", "picocolors": "^1.1.1", "vite-prerender-plugin": "^0.5.3" }, "peerDependencies": { "@babel/core": "7.x", "vite": "2.x || 3.x || 4.x || 5.x || 6.x || 7.x" } }, "sha512-K9wHlJOtkE+cGqlyQ5v9kL3Ge0Ql4LlIZjkUTL+1zf3nNdF88F9UZN6VTV8jdzBX9Fl7WSzeNMSDG7qECPmSmg=="],
+
+    "@preact/signals": ["@preact/signals@2.2.1", "", { "dependencies": { "@preact/signals-core": "^1.11.0" }, "peerDependencies": { "preact": ">= 10.25.0" } }, "sha512-cX3mijdjHbbz3dBoJ6z687CGYEOp9ifj3uFnm4UKW+DxXKPMvE2y/VSdm0PXhXmHnr6F0iSnDJ+dLwmV7CYT5A=="],
+
+    "@preact/signals-core": ["@preact/signals-core@1.11.0", "", {}, "sha512-jglbibeWHuFRzEWVFY/TT7wB1PppJxmcSfUHcK+2J9vBRtiooMfw6tAPttojNYrrpdGViqAYCbPpmWYlMm+eMQ=="],
 
     "@prefresh/babel-plugin": ["@prefresh/babel-plugin@0.5.2", "", {}, "sha512-AOl4HG6dAxWkJ5ndPHBgBa49oo/9bOiJuRDKHLSTyH+Fd9x00shTXpdiTj1W41l6oQIwUOAgJeHMn4QwIDpHkA=="],
 

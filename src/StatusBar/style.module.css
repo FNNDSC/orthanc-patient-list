@@ -1,0 +1,7 @@
+.statusBar {
+  padding: var(--pf-t--global--spacer--100);
+}
+
+.statusBar {
+  background-color: var(--pf-t--global--background--color--secondary--default);
+}

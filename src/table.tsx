@@ -11,8 +11,9 @@ import {
 	EmptyStateBody,
 	EmptyStateFooter,
 	EmptyStateVariant,
+	Tooltip,
 } from "@patternfly/react-core";
-import { SearchIcon } from "@patternfly/react-icons";
+import { ExternalLinkAltIcon, SearchIcon } from "@patternfly/react-icons";
 import {
 	Table,
 	TableVariant,
@@ -35,6 +36,7 @@ const DEFAULT_COLUMNS = [
 	"PatientBirthDate",
 	"PatientSex",
 ];
+const SPECIAL_COLUMNS = ["Actions"];
 
 export function PatientsTable() {
 	const client = useClient(window.location);
@@ -55,11 +57,16 @@ export function PatientsTable() {
 		return <Loading />;
 	}
 
+	const columnNames = useMemo(
+		() => (mainTags as string[]).concat(SPECIAL_COLUMNS),
+		[mainTags],
+	);
+
 	return (
 		<Table variant="compact">
 			<Thead>
 				<Tr>
-					{mainTags.map((name) => (
+					{columnNames.map((name) => (
 						<Th key={name}>{name}</Th>
 					))}
 				</Tr>
@@ -153,7 +160,30 @@ function PatientRow({
 			{values.map(([tag, value]) => (
 				<Td key={tag}>{value}</Td>
 			))}
+			<Td>
+				<LinkToOrthancUi patient={patient} />
+			</Td>
 		</Tr>
+	);
+}
+
+function LinkToOrthancUi({ patient }: { patient: Patient }) {
+	const patientId = useMemo(() => patient.MainDicomTags.PatientID, [patient]);
+	const urlPath = useMemo(
+		() =>
+			`http://localhost:5173/ui/app/#/filtered-studies?PatientID=${encodeURIComponent(`"${patientId}"`)}`,
+		[patientId],
+	);
+	if (!patientId) {
+		return "";
+	}
+	const icon = (
+		<Tooltip content={`See studies of "${patientId}" in OrthancExplorer2`}>
+			<ExternalLinkAltIcon />
+		</Tooltip>
+	);
+	return (
+		<Button size="sm" variant="link" icon={icon} component="a" href={urlPath} />
 	);
 }
 

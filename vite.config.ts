@@ -10,12 +10,20 @@ const ORTHANC_APIS = [
 	"/series",
 	"/instances",
 	"/tools",
+	"/app",
 	"/system",
+	"/ui",
+	"/ohif",
+	"/dicom-web"
 ];
 
-const execOptions = { stdio: 'pipe', encoding: 'utf-8'} as const;
-const buildRef = execFileSync('git', ['describe', '--always', '--dirty'], execOptions);
-const buildCommit = execFileSync('git', ['rev-parse', 'HEAD'], execOptions)
+const execOptions = { stdio: "pipe", encoding: "utf-8" } as const;
+const buildRef = execFileSync(
+	"git",
+	["describe", "--always", "--dirty"],
+	execOptions,
+);
+const buildCommit = execFileSync("git", ["rev-parse", "HEAD"], execOptions);
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -28,8 +36,8 @@ export default defineConfig({
 	define: {
 		__BUILD_DATE__: JSON.stringify(buildDate()),
 		__BUILD_REF__: JSON.stringify(buildRef),
-		__BUILD_COMMIT__: JSON.stringify(buildCommit)
-	}
+		__BUILD_COMMIT__: JSON.stringify(buildCommit),
+	},
 });
 
 function buildDate() {

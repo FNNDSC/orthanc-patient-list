@@ -1,18 +1,18 @@
-import { useSignal } from "@preact/signals";
-import { Patient } from "../types";
-import { DicomTagName } from "./dicom";
-import { useMemo } from "preact/hooks";
-import { Tbody, Td, Tr } from "@patternfly/react-table";
 import { Button, Tooltip } from "@patternfly/react-core";
 import { ExternalLinkAltIcon } from "@patternfly/react-icons";
+import { Tbody, Td, Tr } from "@patternfly/react-table";
+import { useSignal } from "@preact/signals";
 import { Show } from "@preact/signals/utils";
+import { useMemo } from "preact/hooks";
+import type { Patient } from "../types";
+import type { DicomTagName } from "./dicom";
 import { Studies } from "./Studies";
 
 function PatientRow({
 	patient,
 	mainTags,
 	rowIndex,
-	colSpan
+	colSpan,
 }: {
 	rowIndex: number;
 	patient: Patient;
@@ -52,9 +52,9 @@ function PatientRow({
 			</Tr>
 			<Tr isExpanded={isExpanded.value}>
 				<Td colSpan={colSpan}>
-				  <Show when={isExpanded}>
-				    <Studies studies={patient.Studies} />
-				  </Show>
+					<Show when={isExpanded}>
+						<Studies studies={patient.Studies} />
+					</Show>
 				</Td>
 			</Tr>
 		</Tbody>

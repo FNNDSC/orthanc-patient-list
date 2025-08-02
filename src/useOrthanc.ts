@@ -4,14 +4,14 @@
 
 import { type UseQueryResult, useQuery } from "@tanstack/react-query";
 import { useMemo } from "preact/hooks";
+import type { GetSystemResponse } from "./client";
 import {
 	getPatientsOptions,
+	getStudiesByIdOptions,
 	getSystemOptions,
-	getStudiesByIdOptions
 } from "./client/@tanstack/react-query.gen";
 import { type Client, createClient } from "./client/client";
 import type { Patients, Study } from "./types";
-import { GetSystemResponse } from "./client";
 
 function useClient(location: Location) {
 	const baseUrl = `${location.protocol}//${location.host}`;
@@ -43,20 +43,25 @@ type StudyDetails = {
 		StudyDescription: string;
 		ModalitiesInStudy: string;
 		StudyInstanceUID: string;
-	}
+		StudyDate: string;
+	};
 };
 
-function useStudy(client: Client, studyId: string): UseQueryResult<Study & StudyDetails, Error> {
+function useStudy(
+	client: Client,
+	studyId: string,
+): UseQueryResult<Study & StudyDetails, Error> {
 	return useQuery(
 		getStudiesByIdOptions({
 			client,
 			path: {
-				id: studyId
+				id: studyId,
 			},
 			query: {
-				"requested-tags": "AccessionNumber;StudyDescription;ModalitiesInStudy;StudyInstanceUID"
-			}
-		})
+				"requested-tags":
+					"AccessionNumber;StudyDescription;ModalitiesInStudy;StudyInstanceUID;StudyDate",
+			},
+		}),
 	) as UseQueryResult<Study & StudyDetails, Error>;
 }
 

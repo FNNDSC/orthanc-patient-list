@@ -1,10 +1,10 @@
+import { ErrorState } from "@patternfly/react-component-groups";
 import {
 	Bullseye,
 	Button,
 	Card,
 	CardBody,
 	CardHeader,
-	CardTitle,
 	Content,
 	Grid,
 	GridItem,
@@ -12,10 +12,10 @@ import {
 	Title,
 	Tooltip,
 } from "@patternfly/react-core";
-import { useClient, useStudy } from "../useOrthanc";
+import { ThLargeIcon } from "@patternfly/react-icons";
 import { useMemo } from "preact/hooks";
-import { ExclamationCircleIcon, ThLargeIcon } from "@patternfly/react-icons";
-import { ErrorState } from "@patternfly/react-component-groups";
+import { useClient, useStudy } from "../useOrthanc";
+import { prettyDa } from "./dicom";
 
 type StudiesProps = {
 	/**
@@ -67,7 +67,14 @@ function StudyCard({ studyId }: { studyId: string }) {
 				</Bullseye>
 			);
 		}
-		return <Content>{data.RequestedTags.StudyDescription}</Content>;
+		const { StudyDescription, StudyDate } = data.RequestedTags;
+		return (
+			<Content>
+				{StudyDescription}
+				<br />
+				{StudyDate ? prettyDa(StudyDate) : "(No StudyDate)"}
+			</Content>
+		);
 	}, [isLoading, isError, data]);
 	return (
 		<Card isCompact>

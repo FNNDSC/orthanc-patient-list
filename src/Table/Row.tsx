@@ -1,12 +1,13 @@
 import { Button, Tooltip } from "@patternfly/react-core";
 import { ExternalLinkAltIcon } from "@patternfly/react-icons";
 import { Tbody, Td, Tr } from "@patternfly/react-table";
-import { useSignal } from "@preact/signals";
+import { useSignal, useSignalEffect } from "@preact/signals";
 import { Show } from "@preact/signals/utils";
-import { useMemo } from "preact/hooks";
+import { useCallback, useEffect, useMemo } from "preact/hooks";
 import type { Patient } from "../types";
 import type { DicomTagName } from "./dicom";
 import { Studies } from "./Studies";
+import { mrnSearch } from "../Search";
 
 function PatientRow({
 	patient,
@@ -28,6 +29,26 @@ function PatientRow({
 			]),
 		[patient.MainDicomTags, mainTags],
 	);
+
+	// on page load: if URI contains `?expand=...` expand the specified row
+	useEffect(() => {
+		const params = new URLSearchParams(window.location.search);
+		const expanded = params.get("expand");
+		if (expanded && parseInt(expanded) === rowIndex) {
+			isExpanded.value = true;
+		}
+	}, []);
+
+	// set URI `?mrn=...&expand=...`
+	const updateUri = useCallback(() => {
+		const url = new URL(window.location.href);
+		const params = isExpanded.value
+			? { mrn: mrnSearch.value, expand: `${rowIndex}` }
+			: {};
+		url.search = new URLSearchParams(params).toString();
+		history.replaceState(null, "", url.toString());
+	}, []);
+
 	return (
 		<Tbody isExpanded={isExpanded.value}>
 			<Tr isContentExpanded={isExpanded.value}>
@@ -37,6 +58,7 @@ function PatientRow({
 						isExpanded: isExpanded.value,
 						onToggle: () => {
 							isExpanded.value = !isExpanded.value;
+							updateUri();
 						},
 						expandId: "patient-expand-",
 					}}

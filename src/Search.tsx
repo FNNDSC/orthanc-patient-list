@@ -36,6 +36,15 @@ function MrnSearchInput() {
 		return () => document.removeEventListener("keypress", onKeyPress);
 	}, [onKeyPress]);
 
+	// on page load: if URI containts `?mrn=...`, set initial value of search box
+	useEffect(() => {
+		const params = new URLSearchParams(window.location.search);
+		const mrn = params.get("mrn");
+		if (mrn) {
+			mrnSearch.value = mrn;
+		}
+	}, []);
+
 	return (
 		<SearchInput
 			placeholder={placeholder.value}

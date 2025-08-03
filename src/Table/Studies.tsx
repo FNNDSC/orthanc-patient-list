@@ -5,6 +5,7 @@ import {
 	Card,
 	CardBody,
 	CardHeader,
+	Checkbox,
 	Content,
 	Grid,
 	GridItem,
@@ -13,9 +14,12 @@ import {
 	Tooltip,
 } from "@patternfly/react-core";
 import { ThLargeIcon } from "@patternfly/react-icons";
+import { useComputed } from "@preact/signals";
 import { useMemo } from "preact/hooks";
+import * as StudyCart from "../StudyCart";
 import { useClient, useStudy } from "../useOrthanc";
 import { prettyDa } from "./dicom";
+import { useWatcher } from "./useWatcher";
 
 type StudiesProps = {
 	/**
@@ -42,6 +46,17 @@ function StudyCard({ studyId }: { studyId: string }) {
 		client,
 		studyId,
 	);
+	const isSuccessSignal = useWatcher(isSuccess);
+	const dataSignal = useWatcher(data);
+	const studyInstanceUid = useComputed(() =>
+		isSuccessSignal.value
+			? dataSignal.value.RequestedTags.StudyInstanceUID
+			: null,
+	);
+	const isSelected = useComputed(
+		() => isSuccessSignal.value && StudyCart.has(studyInstanceUid.value),
+	);
+
 	const body = useMemo(() => {
 		if (isLoading) {
 			return (
@@ -77,21 +92,49 @@ function StudyCard({ studyId }: { studyId: string }) {
 		);
 	}, [isLoading, isError, data]);
 	return (
-		<Card isCompact>
+		<Card
+			isCompact
+			isClickable={isSuccess}
+			isSelectable={isSuccess}
+			isSelected={isSelected.value}
+		>
 			{isSuccess && (
 				<CardHeader
 					actions={{
 						actions: (
-							<Tooltip content="View in OHIF">
-								<Button
-									variant="link"
-									component="a"
-									href={`/ohif/viewer?StudyInstanceUIDs=${data.RequestedTags.StudyInstanceUID}`}
-								>
-									<ThLargeIcon />
-								</Button>
-							</Tooltip>
+							<>
+								<Tooltip content="View in OHIF">
+									<Button
+										variant="link"
+										size="sm"
+										component="a"
+										href={`/ohif/viewer?StudyInstanceUIDs=${studyInstanceUid}`}
+										icon={<ThLargeIcon />}
+									/>
+								</Tooltip>
+								<Tooltip content="Add to multi-select">
+									<Checkbox
+										id={`checkbox:${data.ID}`}
+										isChecked={isSelected.value}
+										onChange={(_e, checked) => {
+											if (checked) {
+												StudyCart.add(studyInstanceUid.value);
+											} else {
+												StudyCart.remove(studyInstanceUid.value);
+											}
+										}}
+									/>
+								</Tooltip>
+							</>
 						),
+					}}
+					selectableActions={{
+						// NOTE: checkbox is implemented manually for better flexibility (want
+						//       to have tooltip) and also so that it is aligned with the other
+						//       action buttons.
+						isHidden: true,
+						selectableActionAriaLabel: `Select study "${data.MainDicomTags.StudyDescription}"`,
+						selectableActionId: `select:${data.ID}`,
 					}}
 				>
 					<Title headingLevel="h4">

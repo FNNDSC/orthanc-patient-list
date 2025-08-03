@@ -17,12 +17,18 @@ import {
 	Toolbar,
 	ToolbarContent,
 	ToolbarItem,
+	Tooltip,
 } from "@patternfly/react-core";
-import { ExclamationCircleIcon, InfoCircleIcon } from "@patternfly/react-icons";
+import {
+	ExclamationCircleIcon,
+	InfoCircleIcon,
+	ThLargeIcon,
+} from "@patternfly/react-icons";
 import { computed, effect, signal, useSignal } from "@preact/signals";
 import { Show } from "@preact/signals/utils";
 import { useCallback, useEffect, useMemo } from "preact/hooks";
 import { MrnSearchInput } from "../Search";
+import * as StudyCart from "../StudyCart";
 import { useClient, useSystem } from "../useOrthanc";
 import ChrisLogo from "./ChRISlogo-color.svg";
 import ChrisNodesBackground from "./chris_nodes_gradient.svg";
@@ -184,6 +190,18 @@ function Masthead() {
 				<Toolbar>
 					<ToolbarContent>
 						<ToolbarItem align={{ default: "alignEnd" }}>
+							<Show when={StudyCart.hasSome}>
+								<Tooltip content="Clear multi-select">
+									<Button variant="tertiary" onClick={StudyCart.clear}>
+										Cancel
+									</Button>
+								</Tooltip>
+							</Show>
+						</ToolbarItem>
+						<ToolbarItem>
+							<OpenMultiSelectButton />
+						</ToolbarItem>
+						<ToolbarItem>
 							<MrnSearchInput />
 						</ToolbarItem>
 						<ToolbarItem>
@@ -239,6 +257,30 @@ function Masthead() {
 				</Content>
 			</AboutModal>
 		</PfMasthead>
+	);
+}
+
+const multiOhif = computed(
+	() =>
+		`/ohif/viewer?${StudyCart.selectedStudyUids.value.map((studyUid) => `StudyInstanceUIDs=${encodeURIComponent(studyUid)}`).join("&")}&hangingprotocolId=@ohif/hpCompare`,
+);
+
+function OpenMultiSelectButton() {
+	return (
+		<Tooltip content="View multi-select in OHIF">
+			<Button
+				variant="stateful"
+				state="unread"
+				isDisabled={StudyCart.isEmpty.value}
+				countOptions={{
+					count: StudyCart.selectedStudyUids.value.length,
+					isRead: false,
+				}}
+				component="a"
+				href={multiOhif.value}
+				icon={<ThLargeIcon />}
+			/>
+		</Tooltip>
 	);
 }
 

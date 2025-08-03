@@ -22,12 +22,7 @@ import {
 	Thead,
 	Tr,
 } from "@patternfly/react-table";
-import {
-	computed,
-	type ReadonlySignal,
-	useComputed,
-	useSignal,
-} from "@preact/signals";
+import { computed, useComputed } from "@preact/signals";
 import { Show } from "@preact/signals/utils";
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useMemo } from "preact/hooks";
@@ -37,6 +32,7 @@ import { useClient, usePatients, useSystem } from "../useOrthanc";
 import type { DicomTagName } from "./dicom";
 import { parseMainDicomTags } from "./helpers";
 import { PatientRow } from "./Row";
+import { useWatcher } from "./useWatcher";
 
 const DEFAULT_COLUMNS = [
 	"PatientName",
@@ -196,15 +192,6 @@ function Loading() {
 			variant={TableVariant.compact}
 		/>
 	);
-}
-
-/**
- * See https://github.com/preactjs/signals/issues/247
- */
-function useWatcher<T>(value: T): ReadonlySignal<T> {
-	const signal = useSignal(value);
-	signal.value = value;
-	return signal;
 }
 
 export { NUMBER_OF_SPECIAL_COLUMNS };

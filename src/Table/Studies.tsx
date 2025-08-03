@@ -7,8 +7,12 @@ import {
 	CardHeader,
 	Checkbox,
 	Content,
+	Flex,
+	FlexItem,
 	Grid,
 	GridItem,
+	Label,
+	LabelGroup,
 	Spinner,
 	Title,
 	Tooltip,
@@ -137,13 +141,33 @@ function StudyCard({ studyId }: { studyId: string }) {
 						selectableActionId: `select:${data.ID}`,
 					}}
 				>
-					<Title headingLevel="h4">
-						{data.RequestedTags.AccessionNumber || "(No AccessionNumber)"}
-					</Title>
+					<Flex>
+						<FlexItem>
+							<Modalities modalities={data.RequestedTags.ModalitiesInStudy} />
+						</FlexItem>
+						<FlexItem>
+							<Title headingLevel="h4">
+								{data.RequestedTags.AccessionNumber || "(No AccessionNumber)"}
+							</Title>
+						</FlexItem>
+					</Flex>
 				</CardHeader>
 			)}
 			<CardBody>{body}</CardBody>
 		</Card>
+	);
+}
+
+function Modalities({ modalities }: { modalities: string }) {
+	const list = useMemo(() => modalities.split("\\"), [modalities]);
+	return (
+		<LabelGroup>
+			{list.map((modality) => (
+				<Label key={modality} color="blue">
+					{modality}
+				</Label>
+			))}
+		</LabelGroup>
 	);
 }
 

@@ -106,30 +106,37 @@ function StudyCard({ studyId }: { studyId: string }) {
 				<CardHeader
 					actions={{
 						actions: (
-							<>
-								<Tooltip content="View in OHIF">
-									<Button
-										variant="link"
-										size="sm"
-										component="a"
-										href={`/ohif/viewer?StudyInstanceUIDs=${studyInstanceUid}`}
-										icon={<ThLargeIcon />}
-									/>
-								</Tooltip>
-								<Tooltip content="Add to multi-select">
-									<Checkbox
-										id={`checkbox:${data.ID}`}
-										isChecked={isSelected.value}
-										onChange={(_e, checked) => {
-											if (checked) {
-												StudyCart.add(studyInstanceUid.value);
-											} else {
-												StudyCart.remove(studyInstanceUid.value);
-											}
-										}}
-									/>
-								</Tooltip>
-							</>
+							<Flex
+								direction={{ default: "column" }}
+								alignItems={{ default: "alignItemsCenter" }}
+							>
+								<FlexItem>
+									<Tooltip content="Add to multi-select" position="top">
+										<Checkbox
+											id={`checkbox:${data.ID}`}
+											isChecked={isSelected.value}
+											onChange={(_e, checked) => {
+												if (checked) {
+													StudyCart.add(studyInstanceUid.value);
+												} else {
+													StudyCart.remove(studyInstanceUid.value);
+												}
+											}}
+										/>
+									</Tooltip>
+								</FlexItem>
+								<FlexItem>
+									<Tooltip content="View in OHIF" position="bottom">
+										<Button
+											variant="link"
+											size="sm"
+											component="a"
+											href={`/ohif/viewer?StudyInstanceUIDs=${studyInstanceUid}`}
+											icon={<ThLargeIcon />}
+										/>
+									</Tooltip>
+								</FlexItem>
+							</Flex>
 						),
 					}}
 					selectableActions={{
@@ -137,6 +144,7 @@ function StudyCard({ studyId }: { studyId: string }) {
 						//       to have tooltip) and also so that it is aligned with the other
 						//       action buttons.
 						isHidden: true,
+						hasNoOffset: true,
 						selectableActionAriaLabel: `Select study "${data.MainDicomTags.StudyDescription}"`,
 						selectableActionId: `select:${data.ID}`,
 					}}

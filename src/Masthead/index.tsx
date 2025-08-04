@@ -7,11 +7,7 @@ import {
 	MastheadContent,
 	MastheadLogo,
 	MastheadMain,
-	MenuToggle,
 	Masthead as PfMasthead,
-	Select,
-	SelectList,
-	SelectOption,
 	Skeleton,
 	Title,
 	Toolbar,
@@ -19,136 +15,17 @@ import {
 	ToolbarItem,
 	Tooltip,
 } from "@patternfly/react-core";
-import {
-	ExclamationCircleIcon,
-	InfoCircleIcon,
-	ThLargeIcon,
-} from "@patternfly/react-icons";
-import { computed, effect, signal, useSignal } from "@preact/signals";
+import { ExclamationCircleIcon, InfoCircleIcon } from "@patternfly/react-icons";
+import { useSignal } from "@preact/signals";
 import { Show } from "@preact/signals/utils";
-import { useCallback, useEffect, useMemo } from "preact/hooks";
+import { useCallback, useMemo } from "preact/hooks";
 import { MrnSearchInput } from "../Search";
 import * as StudyCart from "../StudyCart";
 import { useClient, useSystem } from "../useOrthanc";
 import ChrisLogo from "./ChRISlogo-color.svg";
 import ChrisNodesBackground from "./chris_nodes_gradient.svg";
-import { DesktopIcon, MoonIcon, SunIcon } from "./themeIcons";
-
-const STORAGE_KEY = "theme-preference";
-
-type ThemePreference = "auto" | "light" | "dark";
-
-function isValid(value?: string): value is ThemePreference {
-	return value === "auto" || value === "light" || value === "dark";
-}
-
-const themePreference = signal<ThemePreference>("auto");
-const isAuto = computed(() => themePreference.value === "auto");
-const isDark = computed(() => themePreference.value === "dark");
-const isLight = computed(() => themePreference.value === "light");
-
-effect(() => {
-	if (themePreference.value === "dark") {
-		enableDarkTheme();
-	} else if (themePreference.value === "light") {
-		enableLightTheme();
-	} else {
-		if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-			enableDarkTheme();
-		} else {
-			enableLightTheme();
-		}
-	}
-});
-
-function enableLightTheme() {
-	document.documentElement.classList.remove("pf-v6-theme-dark");
-}
-
-function enableDarkTheme() {
-	document.documentElement.classList.add("pf-v6-theme-dark");
-}
-
-/**
- * A drop-down menu to select "auto", "light", or "dark" theme.
- */
-function ThemeSelect() {
-	const isOpen = useSignal(false);
-	const onSelect = useCallback((_: Event, value: ThemePreference) => {
-		themePreference.value = value;
-		isOpen.value = false;
-		localStorage.setItem(STORAGE_KEY, themePreference.value);
-	}, []);
-	const onToggleClick = useCallback(() => {
-		isOpen.value = !isOpen.value;
-	}, []);
-	// On startup, get remembered theme preference from localStorage and
-	// addEventListener for `prefers-color-scheme` system change.
-	useEffect(() => {
-		const storedPreference = localStorage.getItem(STORAGE_KEY);
-		if (isValid(storedPreference)) {
-			themePreference.value = storedPreference;
-		}
-		window
-			.matchMedia("(prefers-color-scheme: dark)")
-			.addEventListener("change", ({ matches: isDark }) => {
-				if (themePreference.value === "auto") {
-					if (isDark) {
-						enableDarkTheme();
-					} else {
-						enableLightTheme();
-					}
-				}
-			});
-	}, []);
-	return (
-		<Select
-			isOpen={isOpen.value}
-			onSelect={onSelect}
-			toggle={(toggleRef) => (
-				<MenuToggle
-					ref={toggleRef}
-					isFullWidth
-					onClick={onToggleClick}
-					isExpanded={isOpen.value}
-					icon={
-						<>
-							<Show when={isAuto}>{DesktopIcon}</Show>
-							<Show when={isLight}>{SunIcon}</Show>
-							<Show when={isDark}>{MoonIcon}</Show>
-						</>
-					}
-				/>
-			)}
-			shouldFocusToggleOnSelect
-			popperProps={{ position: "right" }}
-		>
-			<SelectList>
-				<SelectOption
-					value="auto"
-					icon={DesktopIcon}
-					description="Follow system preference"
-				>
-					System
-				</SelectOption>
-				<SelectOption
-					value="light"
-					icon={SunIcon}
-					description="Always use light theme"
-				>
-					Light
-				</SelectOption>
-				<SelectOption
-					value="dark"
-					icon={MoonIcon}
-					description="Always use dark theme"
-				>
-					Dark
-				</SelectOption>
-			</SelectList>
-		</Select>
-	);
-}
+import { ThemeSelect } from "./ThemeSelect";
+import { OpenMultiSelectButton } from "./MultiSelect";
 
 /**
  * Masthead component showing name of this Orthanc server and a toolbar with
@@ -257,30 +134,6 @@ function Masthead() {
 				</Content>
 			</AboutModal>
 		</PfMasthead>
-	);
-}
-
-const multiOhif = computed(
-	() =>
-		`/ohif/viewer?${StudyCart.selectedStudyUids.value.map((studyUid) => `StudyInstanceUIDs=${encodeURIComponent(studyUid)}`).join("&")}&hangingprotocolId=@ohif/hpCompare`,
-);
-
-function OpenMultiSelectButton() {
-	return (
-		<Tooltip content="View multi-select in OHIF">
-			<Button
-				variant="stateful"
-				state="unread"
-				isDisabled={StudyCart.isEmpty.value}
-				countOptions={{
-					count: StudyCart.selectedStudyUids.value.length,
-					isRead: false,
-				}}
-				component="a"
-				href={multiOhif.value}
-				icon={<ThLargeIcon />}
-			/>
-		</Tooltip>
 	);
 }
 

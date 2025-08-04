@@ -23,8 +23,12 @@
 		"preact": "^10.13.1"
 	},
 	"devDependencies": {
+		"@happy-dom/global-registrator": "^18.0.1",
 		"@hey-api/openapi-ts": "^0.80.1",
 		"@preact/preset-vite": "^2.5.0",
+		"@testing-library/dom": "^10.4.1",
+		"@testing-library/jest-dom": "^6.6.4",
+		"@testing-library/preact": "^3.2.4",
 		"@types/bun": "^1.2.19",
 		"cli-progress": "^3.12.0",
 		"concurrently": "^9.2.0",

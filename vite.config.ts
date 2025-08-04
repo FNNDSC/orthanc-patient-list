@@ -1,7 +1,9 @@
+/// <reference types="vitest/config" />
+import { defineConfig } from "vite";
+
 import { execFileSync } from "node:child_process";
 
 import preact from "@preact/preset-vite";
-import { defineConfig } from "vite";
 
 const ORTHANC_URL = "http://localhost:8042";
 const ORTHANC_APIS = [
@@ -38,6 +40,44 @@ export default defineConfig({
 		__BUILD_REF__: JSON.stringify(buildRef),
 		__BUILD_COMMIT__: JSON.stringify(buildCommit),
 	},
+	test: {
+		// environment: "happy-dom",
+
+		browser: {
+			enabled: true,
+			provider: 'playwright',
+			instances: [
+				{
+					browser: 'firefox',
+					setupFile: [ './vitest.setup.tsx' ]
+				}
+			]
+		},
+		
+		// // https://testing-library.com/docs/react-testing-library/setup/#auto-cleanup-in-vitest
+		// globals: true,
+
+		// server: {
+  //     deps: {
+		//     // workaround for 'Unknown file extension ".css"'
+		//     // See https://github.com/vitest-dev/vitest/discussions/6138
+  //       inline: true,
+  //     },
+  //   },
+		// deps: {
+		// 	// workaround to make sure preact/compat alias works in dependencies.
+		// 	// See https://github.com/vitest-dev/vitest/issues/5915#issuecomment-2179794149
+		// 	optimizer: {
+		// 		web: {
+		// 			enabled: true,
+		// 			include: [
+		// 				"@patternfly/react-core",
+	 //          "@patternfly/react-styles",
+		// 			]
+		// 		}
+		// 	}
+		// }
+	}
 });
 
 function buildDate() {

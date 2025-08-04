@@ -1,0 +1,45 @@
+import "@testing-library/jest-dom";
+import { Button } from "@patternfly/react-core";
+import { signal } from "@preact/signals";
+import { fireEvent, render } from "@testing-library/preact";
+// import { fireEvent as fireReactEvent } from "@testing-library/react";
+import { expect, test } from "vitest";
+
+const pfClicked = signal(false);
+
+const PfExample = () => (
+	<Button
+		onChange={() => {
+			pfClicked.value = true;
+		}}
+	>
+		click me
+	</Button>
+);
+
+test("Can click Patternfly button", () => {
+	const { queryByText } = render(<PfExample />);
+	expect(pfClicked.value).toBe(false);
+	fireEvent.change(queryByText("click me"));
+	expect(pfClicked.value).toBe(true); // fail
+});
+
+const otherClicked = signal(false);
+
+const OtherExample = () => (
+	<button
+		type="button"
+		onClick={() => {
+			otherClicked.value = true;
+		}}
+	>
+		click me
+	</button>
+);
+
+test("Can click pure Preact button", () => {
+	const { queryByText } = render(<OtherExample />);
+	expect(otherClicked.value).toBe(false);
+	fireEvent.click(queryByText("click me"));
+	expect(otherClicked.value).toBe(true); // pass
+});

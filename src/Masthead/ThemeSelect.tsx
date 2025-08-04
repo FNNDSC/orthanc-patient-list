@@ -83,6 +83,8 @@ function ThemeSelect() {
 			toggle={(toggleRef) => (
 				<MenuToggle
 					ref={toggleRef}
+					data-testid="theme-selection"
+					aria-label={`Theme selection, current: ${themePreference.value}`}
 					isFullWidth
 					onClick={onToggleClick}
 					isExpanded={isOpen.value}
@@ -114,6 +116,7 @@ function ThemeSelect() {
 					Light
 				</SelectOption>
 				<SelectOption
+					data-testid="dark-theme"
 					value="dark"
 					icon={MoonIcon}
 					description="Always use dark theme"
@@ -125,4 +128,4 @@ function ThemeSelect() {
 	);
 }
 
-export { ThemeSelect };
+export { ThemeSelect, STORAGE_KEY, themePreference };

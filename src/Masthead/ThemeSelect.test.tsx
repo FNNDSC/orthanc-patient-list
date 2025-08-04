@@ -1,17 +1,38 @@
-import { test, expect } from "bun:test";
-import { h } from "preact";
-import "preact/compat";
-import { screen, render } from "@testing-library/preact";
-// import { ThemeSelect } from "./ThemeSelect";
-import { Title } from "@patternfly/react-core";
+import { expect, test } from "vitest";
+import "@patternfly/react-core/dist/styles/base.css";
+import { render } from "vitest-browser-preact";
+import { ThemeSelect, themePreference } from "./ThemeSelect";
 
-test("Can test Patternfly tuff", () => {
-	render(<Title headingLevel="h1">Hello, world</Title>);
-	// const myComponent = screen.getByTestId("my-component");
-	// expect(myComponent).toBeInTheDocument();
-});
-test("Can test other stuff", () => {
-	render(<button>hello, world</button>);
+test("Can set dark theme", async () => {
+	const screen = render(<ThemeSelect />);
+	await screen.getByLabelText(/Theme selection/).click();
+	await expect(screen.getByText("Always use dark theme")).toBeVisible();
+
+	// const { queryByText, getByLabelText, getByText, container, getByTestId } =
+	// 	render(<ThemeSelect />);
+
+	// // menu should not be visible right now
+	// expect(queryByText("Always use dark theme")).toBeNull();
+	// // dark theme should not be the default
+	// expect(document.documentElement.classList.contains("pf-v6-theme-dark")).toBe(
+	// 	false,
+	// );
+
+	// fireEvent.click(container.firstChild);
+	// expect(queryByText("Always use dark theme")).toBeVisible();
+
+	// fireEvent.change(queryByText("Dark"));
+	// fireEvent.click(queryByText("Dark"));
+	// fireEvent.select(queryByText("Dark"));
+	// fireEvent.submit(queryByText("Dark"));
+	// fireEvent.mouseDown(queryByText("Dark"));
+	// fireEvent.mouseUp(queryByText("Dark"));
+	// expect(themePreference.value).toBe("dark");
+	// expect(document.documentElement.classList.contains("pf-v6-theme-dark")).toBe(
+	// 	true,
+	// );
+
+	// localStorage.getItem()
 	// const myComponent = screen.getByTestId("my-component");
 	// expect(myComponent).toBeInTheDocument();
 });

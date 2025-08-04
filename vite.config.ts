@@ -1,9 +1,21 @@
 /// <reference types="vitest/config" />
+/**
+ * vite.config.ts configuration for:
+ *
+ * - Preact
+ * - Inject build date and build ref to AboutModal
+ * - Dev server proxy for Orthanc API
+ * - Vitest browser
+ * - Test coverage
+ * - Codecov bundle analysis
+ */
+
 import { defineConfig } from "vite";
 
 import { execFileSync } from "node:child_process";
 
 import preact from "@preact/preset-vite";
+import { codecovVitePlugin } from "@codecov/vite-plugin";
 
 const ORTHANC_URL = "http://localhost:8042";
 const ORTHANC_APIS = [
@@ -29,7 +41,14 @@ const buildCommit = execFileSync("git", ["rev-parse", "HEAD"], execOptions);
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	plugins: [preact()],
+	plugins: [
+		preact(),
+		codecovVitePlugin({
+			enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
+			bundleName: "orthanc-patient-list",
+			uploadToken: process.env.CODECOV_TOKEN,
+		}),
+	],
 	server: {
 		proxy: {
 			...Object.fromEntries(ORTHANC_APIS.map((path) => [path, ORTHANC_URL])),

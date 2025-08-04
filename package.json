@@ -25,6 +25,7 @@
 		"preact": "^10.13.1"
 	},
 	"devDependencies": {
+		"@codecov/vite-plugin": "^1.9.1",
 		"@hey-api/openapi-ts": "^0.80.1",
 		"@preact/preset-vite": "^2.5.0",
 		"@types/bun": "^1.2.19",

@@ -20,6 +20,8 @@ jobs:
         run: bunx playwright install chromium --with-deps
       - name: Codegen
         run: bun run openapi-ts
+      - name: Run build
+        run: bun run build
       - name: Run tests
         run: bun run coverage --reporter=junit --outputFile=test-report.junit.xml
       - name: Upload coverage to Codecov

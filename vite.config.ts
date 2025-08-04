@@ -41,10 +41,16 @@ export default defineConfig({
 		__BUILD_COMMIT__: JSON.stringify(buildCommit),
 	},
 	test: {
+		coverage: {
+			provider: "v8",
+			reporter: process.env.CI ? ["json"] : ["text", "json", "html"],
+			include: ["src/**"],
+			exclude: ["src/client/**"],
+		},
 		browser: {
 			enabled: true,
 			provider: "playwright",
-			instances: [{ browser: "firefox" }],
+			instances: [{ browser: "chromium" }],
 		},
 	},
 });

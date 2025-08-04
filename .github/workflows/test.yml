@@ -3,11 +3,18 @@ name: Test
 on:
   push:
     branches: [ master ]
+    paths-ignore:
+      - flake.nix
+      - flake.lock
+      - README.md
+      - LICENSE
+      - tsconfig.json
+      - '**.d.ts'
   pull_request:
 
 jobs:
   test:
-    name: Run tests and collect coverage
+    name: Test
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
@@ -22,6 +29,9 @@ jobs:
         run: bun run openapi-ts
       - name: Run build
         run: bun run build
+        env:
+          # For Codecov bundle analysis
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       - name: Run tests
         run: bun run coverage --reporter=junit --outputFile=test-report.junit.xml
       - name: Upload coverage to Codecov

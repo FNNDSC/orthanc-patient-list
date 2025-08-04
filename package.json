@@ -3,6 +3,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
+		"test": "vitest",
 		"build": "vite build",
 		"preview": "vite preview",
 		"openapi-ts": "openapi-ts",
@@ -28,8 +29,14 @@
 		"@types/bun": "^1.2.19",
 		"cli-progress": "^3.12.0",
 		"concurrently": "^9.2.0",
+		"happy-dom": "^18.0.1",
+		"playwright": "^1.54.2",
+		"react": "npm:@preact/compat",
+		"react-dom": "npm:@preact/compat",
 		"typescript": "^5.9.2",
-		"vite": "^4.3.2"
+		"vite": "^7.0.6",
+		"vitest": "^3.2.4",
+		"vitest-browser-preact": "^0.1.2"
 	},
 	"optionalDependencies": {
 		"@biomejs/biome": "^2.1.3"

@@ -1,13 +1,13 @@
 import { Button, Tooltip } from "@patternfly/react-core";
 import { ExternalLinkAltIcon } from "@patternfly/react-icons";
 import { Tbody, Td, Tr } from "@patternfly/react-table";
-import { useSignal, useSignalEffect } from "@preact/signals";
+import { useSignal } from "@preact/signals";
 import { Show } from "@preact/signals/utils";
 import { useCallback, useEffect, useMemo } from "preact/hooks";
+import { mrnSearch } from "../Search";
 import type { Patient } from "../types";
 import type { DicomTagName } from "./dicom";
 import { Studies } from "./Studies";
-import { mrnSearch } from "../Search";
 
 function PatientRow({
 	patient,

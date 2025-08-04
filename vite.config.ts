@@ -1,7 +1,9 @@
+/// <reference types="vitest/config" />
+import { defineConfig } from "vite";
+
 import { execFileSync } from "node:child_process";
 
 import preact from "@preact/preset-vite";
-import { defineConfig } from "vite";
 
 const ORTHANC_URL = "http://localhost:8042";
 const ORTHANC_APIS = [
@@ -37,6 +39,13 @@ export default defineConfig({
 		__BUILD_DATE__: JSON.stringify(buildDate()),
 		__BUILD_REF__: JSON.stringify(buildRef),
 		__BUILD_COMMIT__: JSON.stringify(buildCommit),
+	},
+	test: {
+		browser: {
+			enabled: true,
+			provider: "playwright",
+			instances: [{ browser: "firefox" }],
+		},
 	},
 });
 

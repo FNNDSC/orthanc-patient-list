@@ -1,8 +1,0 @@
-I think the table view seems reasonable to use as deployed here. Since the user would be looking at scans for a given patient as they evolve over time, I think this allows that at the second tier. 
-
-I would anticipate about 50-75 patients on the current project since each site should have about 15 cpa and 15 avms. 
-
-It would be useful to search by anonymized study ID and also to “filter”/search by study site. DOB is potentially anonymized. 
-
-It looks like this would allow the user to quickly access only the scan relevant to a given patient. Would they be able to show two scans side by side of the same patient from different acquisition dates? I.e. looking at the post contrast axial T1 from one date and also from another date. If this is more of an OHIF function that is not friendly to deploy in this custom UI, would it work to have the UI automatically open the OHIF in a separate window so that the user by default is still in the specific patient's folder in the adjacent window and can quickly select the additional scan to be open as well?
-

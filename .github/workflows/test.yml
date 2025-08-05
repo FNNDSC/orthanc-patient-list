@@ -22,10 +22,10 @@ jobs:
       - name: Install bun
         uses: oven-sh/setup-bun@v2
       - name: Install dependencies
-        run: bun install
+        run: bun install --frozen-lockfile --ignore-scripts
       - name: Instlal playwright browsers
         run: bunx playwright install chromium --with-deps
-      - name: Codegen
+      - name: Generate OpenAPI client
         run: bun run openapi-ts
       - name: Run build
         run: bun run build

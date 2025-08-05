@@ -3,10 +3,12 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
+		"predev": "podman-compose up -d",
 		"test": "vitest",
 		"coverage": "vitest run --coverage",
 		"build": "vite build",
 		"preview": "vite preview",
+		"postinstall": "if [ ! -f src/client/sdk.gen.ts ]; then bun run openapi-ts; fi",
 		"openapi-ts": "openapi-ts",
 		"fmt": "bun run biome format --write",
 		"biome": "[ -n \"$IN_NIX_SHELL\" ] && b=$(which -a biome | grep -v node_modules | head -n 1) || b=biome; $b",

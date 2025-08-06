@@ -1,0 +1,20 @@
+{
+	"Name": "Orthanc",
+	"StorageDirectory": "/var/lib/orthanc/db",
+	"IndexDirectory": "/var/lib/orthanc/db",
+
+	"HttpServerEnabled": true,
+	"RemoteAccessAllowed": true,
+	"HttpPort": 8042,
+
+	"HttpDescribeErrors": true,
+	"HttpVerbose": false,
+	"DeidentifyLogs": false,
+
+	"AuthenticationEnabled": true,
+	"RegisteredUsers": {
+		"alice": "alice1234"
+	},
+
+	"Plugins": ["/usr/share/orthanc/plugins", "/usr/local/share/orthanc/plugins", "/custom"]
+}

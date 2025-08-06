@@ -1,0 +1,12 @@
+[package]
+name = "patient_list_ui"
+edition = "2024"
+publish = false
+
+[dependencies]
+include_dir = "0.7.4"
+orthanc_sdk = { version = "0.2.0", features = ["webapp"] }
+
+[lib]
+crate-type = ["cdylib"]
+

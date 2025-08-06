@@ -3,6 +3,7 @@
 
 # Test data
 /data/*.dcm
+/custom
 
 # Logs
 logs

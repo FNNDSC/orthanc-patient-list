@@ -1,0 +1,10 @@
+services:
+  orthanc:
+    image: docker.io/jodogne/orthanc-plugins:1.12.8
+    volumes:
+      - ./Orthanc.jsonc:/etc/orthanc/orthanc.json:ro
+      - ./target/debug:/custom:ro
+    tmpfs:
+      - /var/lib/orthanc/db
+    ports:
+      - 8042:8042

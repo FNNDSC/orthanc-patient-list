@@ -1,0 +1,109 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+    tags: [ 'release/*' ]
+    paths-ignore:
+      - flake.nix
+      - flake.lock
+      - README.md
+      - LICENSE
+      - tsconfig.json
+      - '**.d.ts'
+  pull_request:
+
+jobs:
+  test:
+    name: Test Web App
+    if: github.ref_type == 'branch'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install bun
+        uses: oven-sh/setup-bun@v2
+      - name: Install dependencies
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Install playwright browsers
+        run: bunx playwright install chromium --with-deps
+      - name: Generate OpenAPI client
+        run: bun run openapi-ts
+      - name: Run tests
+        run: bun run coverage --reporter=junit --outputFile=test-report.junit.xml
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+  build:
+    name: Build
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install bun
+        uses: oven-sh/setup-bun@v2
+      - name: Install dependencies
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Generate OpenAPI client
+        run: bun run openapi-ts
+      - name: Run build
+        run: bun run build --base=/pui
+        env:
+          # For Codecov bundle analysis
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: dist
+          if-no-files-found: error
+  test-plugin:
+    name: Test Plugin
+    runs-on: ubuntu-24.04
+    if: github.ref_type == 'branch'
+    needs: [ build ]
+    env:
+      BASE_PATH: /pui
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v5
+        with:
+          path: dist
+      - name: Install podman-compose
+        run: pipx install podman-compose
+      - uses: Swatinem/rust-cache@v2
+      - name: Build
+        run: cd plugin && cargo build --locked
+      - name: Test
+        run: cd plugin && ./test.sh
+  release:
+    name: Release
+    runs-on: ubuntu-24.04
+    needs: [ build ]
+    if: startsWith(github.ref, 'refs/tags/release/')
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v5
+        with:
+          path: dist
+      - name: Build
+        run: cd plugin && cargo build --locked --release
+        env:
+          BASE_PATH: /pui
+      - name: Get name
+        id: name
+        run: |
+          echo "value=${GITHUB_REF_NAME/release\/}" >> "$GITHUB_OUTPUT"
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ steps.name.outputs.value }}
+          fail_on_unmatched_files: true
+          files: plugin/target/release/lib*.so
+
+

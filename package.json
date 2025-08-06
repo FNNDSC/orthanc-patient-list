@@ -7,6 +7,7 @@
 		"test": "vitest",
 		"coverage": "vitest run --coverage",
 		"build": "vite build",
+		"build:plugin": "if [ -z \"$BASE_PATH\" ]; then export BASE_PATH=/pui; fi; bun run build --base=$BASE_PATH && cd plugin && cargo build --release --locked",
 		"preview": "vite preview",
 		"postinstall": "if [ ! -f src/client/sdk.gen.ts ]; then bun run openapi-ts; fi",
 		"openapi-ts": "openapi-ts",

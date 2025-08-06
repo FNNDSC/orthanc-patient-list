@@ -23,9 +23,8 @@ and [Patternfly](https://www.patternfly.org/).
 
 Download the plugin from https://github.com/FNNDSC/orthanc-patient-list/releases/latest
 
-Pre-compiled binaries are only available for Linux x86_64, and the UI will be
-served from the URI path `/pui`. If you want to change this, you need to build
-from source.
+Pre-compiled binaries are only available for Linux x86_64. It may be compatible
+with other platforms, but you will need to [compile from source](#build-from-source).
 
 ### Build from Source
 
@@ -34,7 +33,23 @@ then run
 
 ```shell
 bun install
-env BASE_PATH=/my/custom/patients_list bun run build:plugin
+bun run build
+```
+
+### Plugin Configuration
+
+Configuration is optional. By default, the UI is served from the URI path
+`/pui`, e.g. `https://example.com/pui` or `http://localhost:8042/pui`. This can
+be changed in Orthanc's JSON configuration file:
+
+```jsonc
+{
+  /* Configuration of PatientListUI plugin */
+  "PatientListUI": {
+    /* (Optional) URI path of web app */
+    "RouterBasename": "/myPatientList"
+  }
+}
 ```
 
 ## Development

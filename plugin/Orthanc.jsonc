@@ -16,5 +16,9 @@
 		"alice": "alice1234"
 	},
 
+	"PatientListUI": {
+		"RouterBasename": "/my_custom_patient_ui"
+	},
+
 	"Plugins": ["/usr/share/orthanc/plugins", "/usr/local/share/orthanc/plugins", "/custom"]
 }

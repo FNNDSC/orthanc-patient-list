@@ -13,9 +13,10 @@
 		"openapi-ts": "openapi-ts",
 		"fmt": "bun run biome format --write",
 		"biome": "[ -n \"$IN_NIX_SHELL\" ] && b=$(which -a biome | grep -v node_modules | head -n 1) || b=biome; $b",
-		"data": "bun run data:download && bun run data:upload",
+		"data": "bun run data:download && bun run data:upload && bun run data:assign-nums",
 		"data:download": "cd data && s5cmd --no-sign-request --endpoint-url https://storage.googleapis.com run manifest_gcs.s5cmd",
-		"data:upload": "bun run ./uploadData.ts"
+		"data:upload": "bun run ./scripts/uploadData.ts",
+		"data:assign-nums": "bun run ./scripts/assignAccessionNumbers.ts"
 	},
 	"dependencies": {
 		"@patternfly/react-component-groups": "^6.3.0",

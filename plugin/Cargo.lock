@@ -24,12 +24,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8"
 
 [[package]]
-name = "base32"
-version = "0.5.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "022dfe9eb35f19ebbcb51e0b40a5ab759f46ad60cadf7297e0bd085afb50e076"
-
-[[package]]
 name = "base64"
 version = "0.22.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -225,12 +219,6 @@ dependencies = [
  "fnv",
  "itoa",
 ]
-
-[[package]]
-name = "httpdate"
-version = "1.0.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "df3b46402a9d5adb4c86a0cf463f42e19994e3ee891101b1841f30a545cb49a9"
 
 [[package]]
 name = "iana-time-zone"
@@ -558,18 +546,16 @@ dependencies = [
 
 [[package]]
 name = "orthanc_sdk"
-version = "0.3.0"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1215f06b571225c4c17209cbdbfe31ea045cd953d0a14db0979e3bebd2e90e4f"
+checksum = "378446730b99eb3dab3d4c0dfd0777c92914b124d64f9dc4237b378e7bbc0dfc"
 dependencies = [
- "base32",
  "compact_str",
  "http",
  "include_dir",
  "mime_guess",
  "orthanc_api",
  "orthanc_client_ogen",
- "rapidhash",
  "serde",
  "serde_json",
  "thiserror",
@@ -580,7 +566,6 @@ dependencies = [
 name = "patient_list_ui"
 version = "0.0.0"
 dependencies = [
- "httpdate",
  "include_dir",
  "orthanc_sdk",
  "serde",
@@ -630,12 +615,6 @@ checksum = "1885c039570dc00dcb4ff087a89e185fd56bae234ddc7f056a945bf36467248d"
 dependencies = [
  "proc-macro2",
 ]
-
-[[package]]
-name = "rapidhash"
-version = "3.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "efee4b7317469c6c6e7fdeee3d094313af846a97678d6ed971d83a852d730083"
 
 [[package]]
 name = "ref-cast"

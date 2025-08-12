@@ -5,12 +5,9 @@ publish = false
 
 [dependencies]
 include_dir = "0.7.4"
-orthanc_sdk = { version = "0.3.0", features = ["webapp"] }
+orthanc_sdk = { version = "0.2.0", features = ["webapp"] }
 serde = { version = "1.0.219", features = ["derive"] }
 
 [lib]
 crate-type = ["cdylib"]
-
-[build-dependencies]
-httpdate = "1.0.3"
 

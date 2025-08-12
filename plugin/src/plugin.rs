@@ -3,23 +3,18 @@
 use std::ffi::{CStr, CString};
 use std::sync::RwLock;
 
-use include_dir::include_dir;
+use include_webdir::include_cwebdir;
 use orthanc_sdk::bindings;
 
 /// Base path of web app bundle (hard-coded into vite build command)
 const BASE_PATH: &str = "/patient_list_ui";
 /// Regular expression matching files which should be served from [BASE_PATH].
-const BASE_PATH_RE: &CStr = c"/patient_list_ui(/.*)?";
+const BASE_PATH_RE: &CStr = c"/patient_list_ui/?(.*)?";
 
 struct OrthancContext(*mut bindings::OrthancPluginContext);
 
 unsafe impl Send for OrthancContext {}
 unsafe impl Sync for OrthancContext {}
-
-struct AppState {
-    context: OrthancContext,
-    basename: String,
-}
 
 #[derive(serde::Deserialize)]
 struct UiConfig {
@@ -41,9 +36,9 @@ struct OrthancConfig {
     ui: Option<UiConfig>,
 }
 
-static GLOBAL_STATE: RwLock<Option<AppState>> = RwLock::new(None);
+static GLOBAL_STATE: RwLock<Option<OrthancContext>> = RwLock::new(None);
 
-const DIST: include_dir::Dir = include_dir!("$CARGO_MANIFEST_DIR/../dist");
+const DIST: include_webdir::CWebBundle = include_cwebdir!("$CARGO_MANIFEST_DIR/../dist");
 
 #[unsafe(no_mangle)]
 pub extern "C" fn OrthancPluginGetName() -> *const u8 {
@@ -75,15 +70,12 @@ pub extern "C" fn OrthancPluginInitialize(
      * paths.
      */
     if basename != BASE_PATH {
-        let path_regex = CString::new(format!("{}(/.*)?", &basename)).unwrap();
+        let path_regex = CString::new(format!("{}/?(.*)", &basename)).unwrap();
         orthanc_sdk::register_rest_no_lock(context, &path_regex, Some(serve_under_custom_path));
     }
 
     let mut global_state = GLOBAL_STATE.try_write().unwrap();
-    *global_state = Some(AppState {
-        context: OrthancContext(context),
-        basename,
-    });
+    *global_state = Some(OrthancContext(context));
 
     bindings::OrthancPluginErrorCode_OrthancPluginErrorCode_Success
 }
@@ -97,13 +89,13 @@ pub extern "C" fn OrthancPluginFinalize() {
 
 extern "C" fn serve_under_static_path(
     output: *mut bindings::OrthancPluginRestOutput,
-    url: *const std::ffi::c_char,
+    _url: *const std::ffi::c_char,
     request: *const bindings::OrthancPluginHttpRequest,
 ) -> bindings::OrthancPluginErrorCode {
     if let Ok(global_context) = GLOBAL_STATE.try_read().as_ref()
-        && let Some(AppState { context, .. }) = global_context.as_ref()
+        && let Some(context) = global_context.as_ref()
     {
-        orthanc_sdk::serve_static_file(context.0, output, url, request, &DIST, BASE_PATH)
+        orthanc_sdk::serve_static_file(context.0, output, request, &DIST)
     } else {
         bindings::OrthancPluginErrorCode_OrthancPluginErrorCode_InternalError
     }
@@ -111,13 +103,13 @@ extern "C" fn serve_under_static_path(
 
 extern "C" fn serve_under_custom_path(
     output: *mut bindings::OrthancPluginRestOutput,
-    url: *const std::ffi::c_char,
+    _url: *const std::ffi::c_char,
     request: *const bindings::OrthancPluginHttpRequest,
 ) -> bindings::OrthancPluginErrorCode {
     if let Ok(global_context) = GLOBAL_STATE.try_read().as_ref()
-        && let Some(AppState { context, basename }) = global_context.as_ref()
+        && let Some(context) = global_context.as_ref()
     {
-        orthanc_sdk::serve_static_file(context.0, output, url, request, &DIST, basename)
+        orthanc_sdk::serve_static_file(context.0, output, request, &DIST)
     } else {
         bindings::OrthancPluginErrorCode_OrthancPluginErrorCode_InternalError
     }
